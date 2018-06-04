@@ -22,6 +22,7 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
                 nested: true,
             },
         };
+        // Use below to connect to a MySQL database
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
             connector: 'loopback-connector-mysql',
@@ -31,6 +32,11 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
             user: 'root',
             password: 'root'
         });
+        // Use below for an in-memory database
+        // var dataSourceConfig = new juggler.DataSource({
+        //   name: "db",
+        //   connector: 'memory'
+        // });
         this.dataSource(dataSourceConfig);
     }
     async start() {
@@ -38,7 +44,7 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
         const server = await this.getServer(rest_1.RestServer);
         const port = await server.get(rest_1.RestBindings.PORT);
         console.log(`Server is running at http://127.0.0.1:${port}`);
-        console.log(`Try http://127.0.0.1:${port}/ping`);
+        console.log(`Try http://127.0.0.1:${port}/swagger-ui`);
     }
 }
 exports.GoldenThreadApiApplication = GoldenThreadApiApplication;

@@ -34,7 +34,18 @@ let UserController = class UserController {
                 return user;
             }
         }
-        throw new rest_1.HttpErrors.NotFound("User not found, sorry!");
+        throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
+    }
+    async loginWithQuery(login) {
+        var users = await this.userRepo.find({
+            where: {
+                and: [{ email: login.email }, { password: login.password }],
+            },
+        });
+        if (users.length == 0) {
+            throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
+        }
+        return users[0];
     }
     async getAllUsers() {
         return await this.userRepo.find();
@@ -44,7 +55,7 @@ let UserController = class UserController {
             return await this.userRepo.findById(id);
         }
         catch (err) {
-            throw new rest_1.HttpErrors.NotFound("User not found, sorry!");
+            throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
         }
     }
 };
@@ -63,6 +74,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
+    rest_1.post('/login-with-query'),
+    __param(0, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [login_1.Login]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "loginWithQuery", null);
+__decorate([
     rest_1.get('/users'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -70,7 +88,7 @@ __decorate([
 ], UserController.prototype, "getAllUsers", null);
 __decorate([
     rest_1.get('/users/{id}'),
-    __param(0, rest_1.param.query.number("id")),
+    __param(0, rest_1.param.query.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
