@@ -8,43 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
-let Pizza = class Pizza extends repository_1.Entity {
-    getId() {
-        return this.id;
+const core_1 = require("@loopback/core");
+const loopback_datasource_juggler_1 = require("loopback-datasource-juggler");
+const user_1 = require("../models/user");
+let UserRepository = class UserRepository extends repository_1.DefaultCrudRepository {
+    constructor(datasource) {
+        super(user_1.User, datasource);
+        this.datasource = datasource;
     }
 };
-__decorate([
-    repository_1.property({
-        type: 'number',
-        id: true
-    }),
-    __metadata("design:type", Number)
-], Pizza.prototype, "id", void 0);
-__decorate([
-    repository_1.property({
-        type: 'string',
-        required: true
-    }),
-    __metadata("design:type", String)
-], Pizza.prototype, "name", void 0);
-__decorate([
-    repository_1.property({
-        type: 'string'
-    }),
-    __metadata("design:type", String)
-], Pizza.prototype, "desc", void 0);
-__decorate([
-    repository_1.property({
-        type: 'string'
-    }),
-    __metadata("design:type", String)
-], Pizza.prototype, "toppings", void 0);
-Pizza = __decorate([
-    repository_1.model({
-        name: "pizza"
-    })
-], Pizza);
-exports.Pizza = Pizza;
-//# sourceMappingURL=pizza.js.map
+UserRepository = __decorate([
+    __param(0, core_1.inject('datasources.db')),
+    __metadata("design:paramtypes", [loopback_datasource_juggler_1.DataSource])
+], UserRepository);
+exports.UserRepository = UserRepository;
+//# sourceMappingURL=user.repository.js.map

@@ -33,10 +33,23 @@ export class GoldenThreadApiApplication extends BootMixin(
       },
     };
 
+    // Use below to connect to a MySQL database
     var dataSourceConfig = new juggler.DataSource({
       name: "db",
-      connector: "memory"
+      connector: 'loopback-connector-mysql',
+      host: 'localhost',
+      port: 3306,
+      database: 'golden_thread',
+      user: 'root',
+      password: 'root'
     });
+
+    // Use below for an in-memory database
+    // var dataSourceConfig = new juggler.DataSource({
+    //   name: "db",
+    //   connector: 'memory'
+    // });
+
     this.dataSource(dataSourceConfig);
   }
 
@@ -46,6 +59,6 @@ export class GoldenThreadApiApplication extends BootMixin(
     const server = await this.getServer(RestServer);
     const port = await server.get(RestBindings.PORT);
     console.log(`Server is running at http://127.0.0.1:${port}`);
-    console.log(`Try http://127.0.0.1:${port}/ping`);
+    console.log(`Try http://127.0.0.1:${port}/swagger-ui`);
   }
 }

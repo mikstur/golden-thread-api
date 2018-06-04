@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
-let Pizza = class Pizza extends repository_1.Entity {
+let User = class User extends repository_1.Entity {
     getId() {
         return this.id;
     }
@@ -21,30 +21,36 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Pizza.prototype, "id", void 0);
+], User.prototype, "id", void 0);
 __decorate([
     repository_1.property({
         type: 'string',
         required: true
     }),
     __metadata("design:type", String)
-], Pizza.prototype, "name", void 0);
+], User.prototype, "firstname", void 0);
 __decorate([
     repository_1.property({
         type: 'string'
     }),
     __metadata("design:type", String)
-], Pizza.prototype, "desc", void 0);
+], User.prototype, "lastname", void 0);
 __decorate([
     repository_1.property({
         type: 'string'
     }),
     __metadata("design:type", String)
-], Pizza.prototype, "toppings", void 0);
-Pizza = __decorate([
+], User.prototype, "email", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string'
+    }),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
+User = __decorate([
     repository_1.model({
-        name: "pizza"
+        name: "user"
     })
-], Pizza);
-exports.Pizza = Pizza;
-//# sourceMappingURL=pizza.js.map
+], User);
+exports.User = User;
+//# sourceMappingURL=user.js.map
