@@ -31,12 +31,24 @@ export class UserController {
     throw new HttpErrors.NotFound('User not found, sorry!');
   }
 
+  @get('/users/{user_id}/donations')
+  async getDonationsByUserId(
+    @param.path.number('user_id') userId: number,
+    @param.query.date('date_from') dateFrom: Date,
+    @param.query.string('cool_variable') coolVariable: string
+  ) {
+    // Some awesome logic down here...
+    console.log(userId);
+    console.log(dateFrom);
+    console.log(coolVariable);
+  }
+
   @post('/login-with-query')
   async loginWithQuery(@requestBody() login: Login): Promise<User> {
     var users = await this.userRepo.find({
       where: {
-        and: [{email: login.email}, {password: login.password}],
-      },
+        email: login.email
+      }
     });
 
     if (users.length == 0) {

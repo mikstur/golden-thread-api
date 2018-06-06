@@ -11,6 +11,8 @@ import {
   RepositoryMixin,
   juggler
 } from '@loopback/repository';
+import { UserController } from './controllers/user.controller';
+import { UserRepository } from './repositories/user.repository';
 /* tslint:enable:no-unused-variable */
 
 export class GoldenThreadApiApplication extends BootMixin(
@@ -30,7 +32,7 @@ export class GoldenThreadApiApplication extends BootMixin(
         dirs: ['controllers'],
         extensions: ['.controller.js'],
         nested: true,
-      },
+      }
     };
 
     // Use below to connect to a MySQL database
@@ -49,8 +51,6 @@ export class GoldenThreadApiApplication extends BootMixin(
     //   name: "db",
     //   connector: 'memory'
     // });
-
-    this.dataSource(dataSourceConfig);
   }
 
   async start() {

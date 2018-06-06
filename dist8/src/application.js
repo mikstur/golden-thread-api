@@ -6,6 +6,8 @@ const sequence_1 = require("./sequence");
 // Binding and Booter imports are required to infer types for BootMixin!
 const boot_1 = require("@loopback/boot");
 const repository_1 = require("@loopback/repository");
+const user_controller_1 = require("./controllers/user.controller");
+const user_repository_1 = require("./repositories/user.repository");
 /* tslint:enable:no-unused-variable */
 class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin(rest_1.RestApplication)) {
     constructor(options) {
@@ -21,6 +23,11 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
                 extensions: ['.controller.js'],
                 nested: true,
             },
+            repositories: {
+                dirs: ['another-repo-folder'],
+                extensions: ['ix-repo.js'],
+                nested: true
+            }
         };
         // Use below to connect to a MySQL database
         var dataSourceConfig = new repository_1.juggler.DataSource({
@@ -37,7 +44,12 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
         //   name: "db",
         //   connector: 'memory'
         // });
+        // Register our DataSource with LoopBack App "datasources.db"
         this.dataSource(dataSourceConfig);
+        // Register our Controller with LoopBack App "controllers.user"
+        this.controller(user_controller_1.UserController);
+        // Register our Repository with LoopBack App "repositories.user"
+        this.repository(user_repository_1.UserRepository);
     }
     async start() {
         await super.start();

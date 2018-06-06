@@ -36,11 +36,17 @@ let UserController = class UserController {
         }
         throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
     }
+    async getDonationsByUserId(userId, dateFrom, coolVariable) {
+        // Some awesome logic down here...
+        console.log(userId);
+        console.log(dateFrom);
+        console.log(coolVariable);
+    }
     async loginWithQuery(login) {
         var users = await this.userRepo.find({
             where: {
-                and: [{ email: login.email }, { password: login.password }],
-            },
+                email: login.email
+            }
         });
         if (users.length == 0) {
             throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
@@ -73,6 +79,15 @@ __decorate([
     __metadata("design:paramtypes", [login_1.Login]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
+__decorate([
+    rest_1.get('/users/{user_id}/donations'),
+    __param(0, rest_1.param.path.number('user_id')),
+    __param(1, rest_1.param.query.date('date_from')),
+    __param(2, rest_1.param.query.string('cool_variable')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Date, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getDonationsByUserId", null);
 __decorate([
     rest_1.post('/login-with-query'),
     __param(0, rest_1.requestBody()),
