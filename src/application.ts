@@ -51,6 +51,8 @@ export class GoldenThreadApiApplication extends BootMixin(
     //   name: "db",
     //   connector: 'memory'
     // });
+
+    this.dataSource(dataSourceConfig);
   }
 
   async start() {
