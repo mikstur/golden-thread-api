@@ -1,12 +1,13 @@
-import { repository } from "@loopback/repository";
-import { PizzaRepository } from "../repositories/pizza.repository";
-import { post, get, requestBody } from "@loopback/rest";
-import { Pizza } from "../models/pizza";
+import {repository} from '@loopback/repository';
+import {PizzaRepository} from '../repositories/pizza.repository';
+import {post, get, requestBody, param, HttpErrors} from '@loopback/rest';
+import {Pizza} from '../models/pizza';
+
+import {sign, verify} from 'jsonwebtoken';
 
 export class PizzaController {
-
   constructor(
-    @repository(PizzaRepository.name) private pizzaRepo: PizzaRepository
+    @repository(PizzaRepository.name) private pizzaRepo: PizzaRepository,
   ) {}
 
   @post('/pizzas')
@@ -15,7 +16,17 @@ export class PizzaController {
   }
 
   @get('/pizzas')
-  async getAllPizzas(): Promise<Array<Pizza>> {
-    return await this.pizzaRepo.find();
+  async getAllPizzas(@param.query.string('jwt') jwt: string): Promise<any> {
+    if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
+
+    try {
+      var jwtBody = verify(jwt, 'shh');
+      console.log(jwtBody);
+      return jwtBody;
+    } catch (err) {
+      throw new HttpErrors.BadRequest('JWT token invalid');
+    }
+
+    //return await this.pizzaRepo.find();
   }
 }

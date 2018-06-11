@@ -16,6 +16,7 @@ const repository_1 = require("@loopback/repository");
 const pizza_repository_1 = require("../repositories/pizza.repository");
 const rest_1 = require("@loopback/rest");
 const pizza_1 = require("../models/pizza");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let PizzaController = class PizzaController {
     constructor(pizzaRepo) {
         this.pizzaRepo = pizzaRepo;
@@ -23,8 +24,18 @@ let PizzaController = class PizzaController {
     async createPizza(pizza) {
         return await this.pizzaRepo.create(pizza);
     }
-    async getAllPizzas() {
-        return await this.pizzaRepo.find();
+    async getAllPizzas(jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'hello');
+            console.log(jwtBody);
+            return jwtBody;
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
+        //return await this.pizzaRepo.find();
     }
 };
 __decorate([
@@ -36,8 +47,9 @@ __decorate([
 ], PizzaController.prototype, "createPizza", null);
 __decorate([
     rest_1.get('/pizzas'),
+    __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PizzaController.prototype, "getAllPizzas", null);
 PizzaController = __decorate([

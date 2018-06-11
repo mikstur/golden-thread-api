@@ -33,7 +33,12 @@ let UserController = class UserController {
             var user = users[i];
             if (user.email == email && user.password == password) {
                 var jwt = jsonwebtoken_1.sign({
-                    user: user,
+                    user: {
+                        id: user.id,
+                        firstname: user.firstname,
+                        email: user.email
+                    },
+                    anything: "hello"
                 }, 'shh', {
                     issuer: 'auth.ix.co.za',
                     audience: 'ix.co.za',
@@ -43,7 +48,8 @@ let UserController = class UserController {
                 };
             }
         }
-        throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
+        throw new rest_1.HttpErrors.Unauthorized('User not found, sorry!');
+        //return "Error";
     }
     async loginWithQuery(login) {
         var users = await this.userRepo.find({

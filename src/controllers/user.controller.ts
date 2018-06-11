@@ -25,9 +25,15 @@ export class UserController {
     for (var i = 0; i < users.length; i++) {
       var user = users[i];
       if (user.email == email && user.password == password) {
+
         var jwt = sign(
           {
-            user: user,
+            user: {
+              id: user.id,
+              firstname: user.firstname,
+              email: user.email
+            },
+            anything: "hello"
           },
           'shh',
           {
@@ -35,14 +41,15 @@ export class UserController {
             audience: 'ix.co.za',
           },
         );
-
+        
         return {
           token: jwt,
         };
       }
     }
 
-    throw new HttpErrors.NotFound('User not found, sorry!');
+    throw new HttpErrors.Unauthorized('User not found, sorry!');
+    //return "Error";
   }
 
   @post('/login-with-query')
