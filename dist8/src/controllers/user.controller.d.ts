@@ -5,7 +5,7 @@ export declare class UserController {
     private userRepo;
     constructor(userRepo: UserRepository);
     createUser(user: User): Promise<User>;
-    login(login: Login): Promise<User>;
+    login(login: Login): Promise<any>;
     loginWithQuery(login: Login): Promise<User>;
     getAllUsers(): Promise<Array<User>>;
     getUserById(id: number): Promise<User>;

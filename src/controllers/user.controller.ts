@@ -3,6 +3,7 @@ import {post, get, requestBody, HttpErrors, param} from '@loopback/rest';
 import {UserRepository} from '../repositories/user.repository';
 import {User} from '../models/user';
 import {Login} from '../models/login';
+import {sign, verify} from 'jsonwebtoken';
 
 export class UserController {
   constructor(
@@ -15,7 +16,7 @@ export class UserController {
   }
 
   @post('/login')
-  async login(@requestBody() login: Login): Promise<User> {
+  async login(@requestBody() login: Login): Promise<any> {
     var users = await this.userRepo.find();
 
     var email = login.email;
@@ -24,7 +25,20 @@ export class UserController {
     for (var i = 0; i < users.length; i++) {
       var user = users[i];
       if (user.email == email && user.password == password) {
-        return user;
+        var jwt = sign(
+          {
+            user: user,
+          },
+          'shh',
+          {
+            issuer: 'auth.ix.co.za',
+            audience: 'ix.co.za',
+          },
+        );
+
+        return {
+          token: jwt,
+        };
       }
     }
 

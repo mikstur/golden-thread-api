@@ -17,6 +17,7 @@ const rest_1 = require("@loopback/rest");
 const user_repository_1 = require("../repositories/user.repository");
 const user_1 = require("../models/user");
 const login_1 = require("../models/login");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let UserController = class UserController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -31,7 +32,15 @@ let UserController = class UserController {
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
             if (user.email == email && user.password == password) {
-                return user;
+                var jwt = jsonwebtoken_1.sign({
+                    user: user,
+                }, 'shh', {
+                    issuer: 'auth.ix.co.za',
+                    audience: 'ix.co.za',
+                });
+                return {
+                    token: jwt,
+                };
             }
         }
         throw new rest_1.HttpErrors.NotFound('User not found, sorry!');
