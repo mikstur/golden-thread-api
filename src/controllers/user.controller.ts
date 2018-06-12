@@ -5,6 +5,8 @@ import {User} from '../models/user';
 import {Login} from '../models/login';
 import {sign, verify} from 'jsonwebtoken';
 
+import * as bcrypt from 'bcrypt';
+
 export class UserController {
   constructor(
     @repository(UserRepository.name) private userRepo: UserRepository,
@@ -12,7 +14,20 @@ export class UserController {
 
   @post('/registration')
   async createUser(@requestBody() user: User) {
-    return await this.userRepo.create(user);
+
+    console.log(user.password);
+    let hashedPassword = await bcrypt.hash(user.password, 10);
+
+    var userToStore = new User();
+    userToStore.id = user.id;
+    userToStore.firstname = user.firstname;
+    userToStore.lastname = user.lastname;
+    userToStore.email = user.email;
+    userToStore.password = hashedPassword;
+
+    let storedUser = await this.userRepo.create(userToStore);
+    storedUser.password = "";
+    return storedUser;
   }
 
   @post('/login')
@@ -20,11 +35,10 @@ export class UserController {
     var users = await this.userRepo.find();
 
     var email = login.email;
-    var password = login.password;
 
     for (var i = 0; i < users.length; i++) {
       var user = users[i];
-      if (user.email == email && user.password == password) {
+      if (user.email == email && await bcrypt.compare(login.password, user.password)) {
 
         var jwt = sign(
           {

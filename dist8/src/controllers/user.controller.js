@@ -18,20 +18,30 @@ const user_repository_1 = require("../repositories/user.repository");
 const user_1 = require("../models/user");
 const login_1 = require("../models/login");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 let UserController = class UserController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
     async createUser(user) {
-        return await this.userRepo.create(user);
+        console.log(user.password);
+        let hashedPassword = await bcrypt.hash(user.password, 10);
+        var userToStore = new user_1.User();
+        userToStore.id = user.id;
+        userToStore.firstname = user.firstname;
+        userToStore.lastname = user.lastname;
+        userToStore.email = user.email;
+        userToStore.password = hashedPassword;
+        let storedUser = await this.userRepo.create(userToStore);
+        storedUser.password = "";
+        return storedUser;
     }
     async login(login) {
         var users = await this.userRepo.find();
         var email = login.email;
-        var password = login.password;
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
-            if (user.email == email && user.password == password) {
+            if (user.email == email && await bcrypt.compare(login.password, user.password)) {
                 var jwt = jsonwebtoken_1.sign({
                     user: {
                         id: user.id,
