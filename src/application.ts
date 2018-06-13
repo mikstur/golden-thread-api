@@ -51,6 +51,8 @@ export class GoldenThreadApiApplication extends BootMixin(
     // });
 
     this.dataSource(dataSourceConfig);
+
+    //this.bind("auth.service").toClass(AuthService);
   }
 
   async start() {

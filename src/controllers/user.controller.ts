@@ -58,6 +58,7 @@ export class UserController {
         
         return {
           token: jwt,
+          something: "lol"
         };
       }
     }
