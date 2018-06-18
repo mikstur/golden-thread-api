@@ -30,7 +30,8 @@
     "posttest": "npm run lint",
     "prestart": "npm run build:current",
     "start": "node .",
-    "prepublishOnly": "npm run test"
+    "prepublishOnly": "npm run test",
+    "miki": "NODE_ENV=miki DATABASE_NAME=golden_thread npm start"
   },
   "repository": {
     "type": "git"
@@ -56,7 +57,8 @@
     "@types/jsonwebtoken": "^7.2.7",
     "bcrypt": "^2.0.1",
     "jsonwebtoken": "^8.2.2",
-    "loopback-connector-mysql": "^5.2.0"
+    "loopback-connector-mysql": "^5.2.0",
+    "typescript": "^2.9.2"
   },
   "devDependencies": {
     "@loopback/build": "^0.6.5",
