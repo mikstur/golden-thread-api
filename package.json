@@ -31,7 +31,7 @@
     "prestart": "npm run build:current",
     "start": "node .",
     "prepublishOnly": "npm run test",
-    "miki": "NODE_ENV=miki DATABASE_NAME=golden_thread npm start"
+    "miki": "DATABASE_HOST=localhost DATABASE_NAME=golden_thread DATABASE_USERNAME=root DATABASE_PASSWORD=root npm start"
   },
   "repository": {
     "type": "git"

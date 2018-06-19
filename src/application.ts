@@ -40,42 +40,24 @@ export class GoldenThreadApiApplication extends BootMixin(
       }
     };
 
-    var environment = process.env.NODE_ENV;
-    var databaseName = null;
-    var databaseUsername = 'root';
-    var databasePassword = 'root';
-
-    if (environment == "miki") {
-      databaseName = process.env.DATABASE_NAME as string;
-    }
-
-    if (environment == "perry") {
-      databaseName = 'hello';
-    }
-
-    console.log("environment: ", environment);
-    console.log("database name: ", databaseName);
-
     // Use below to connect to a MySQL database
-    // var dataSourceConfig = new juggler.DataSource({
-    //   name: "db",
-    //   connector: 'loopback-connector-mysql',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   database: databaseName,
-    //   user: databaseUsername,
-    //   password: databasePassword
-    // });
-
-    // Use below for an in-memory database
     var dataSourceConfig = new juggler.DataSource({
       name: "db",
-      connector: 'memory'
+      connector: 'loopback-connector-mysql',
+      host: process.env.DATABASE_HOST,
+      port: 3306,
+      database: process.env.DATABASE_NAME,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD
     });
 
-    this.dataSource(dataSourceConfig);
+    // Use below for an in-memory database
+    // var dataSourceConfig = new juggler.DataSource({
+    //   name: "db",
+    //   connector: 'memory'
+    // });
 
-    //this.bind("auth.service").toClass(AuthService);
+    this.dataSource(dataSourceConfig);
   }
 
   async start() {
