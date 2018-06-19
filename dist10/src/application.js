@@ -10,6 +10,8 @@ const repository_1 = require("@loopback/repository");
 class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin(rest_1.RestApplication)) {
     constructor(options) {
         super(options);
+        // Set up port
+        this.bind(rest_1.RestBindings.PORT).to(process.env.PORT || 3000);
         // Set up the custom sequence
         this.sequence(sequence_1.MySequence);
         this.projectRoot = __dirname;
@@ -20,7 +22,7 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
                 dirs: ['controllers'],
                 extensions: ['.controller.js'],
                 nested: true,
-            },
+            }
         };
         var environment = process.env.NODE_ENV;
         var databaseName = null;

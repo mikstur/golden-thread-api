@@ -20,6 +20,9 @@ export class GoldenThreadApiApplication extends BootMixin(
   constructor(options?: ApplicationConfig) {
     super(options);
 
+    // Set up port
+    this.bind(RestBindings.PORT).to(process.env.PORT as any || 3000);
+
     // Set up the custom sequence
     this.sequence(MySequence);
 
@@ -31,9 +34,6 @@ export class GoldenThreadApiApplication extends BootMixin(
         dirs: ['controllers'],
         extensions: ['.controller.js'],
         nested: true,
-      },
-      rest: {
-        port: process.env.PORT || 3000
       }
     };
 
