@@ -32,6 +32,9 @@ export class GoldenThreadApiApplication extends BootMixin(
         extensions: ['.controller.js'],
         nested: true,
       },
+      rest: {
+        port: process.env.PORT || 3000
+      }
     };
 
     var environment = process.env.NODE_ENV;
