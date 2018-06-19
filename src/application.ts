@@ -26,9 +26,6 @@ export class GoldenThreadApiApplication extends BootMixin(
       }
     });
 
-    // Set up port
-    //this.bind(RestBindings.PORT).to(process.env.PORT as any || 3000);
-
     // Set up the custom sequence
     this.sequence(MySequence);
 
